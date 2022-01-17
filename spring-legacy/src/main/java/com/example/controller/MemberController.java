@@ -13,4 +13,10 @@ public class MemberController {
 		System.out.println("loginForm() 호출됨...");
 		return "member/login";
 	}
+	
+	@GetMapping("/join")
+	public String joinForm() {
+		System.out.println("joinForm() 호출됨...");
+		return "member/join";
+	}
 }
