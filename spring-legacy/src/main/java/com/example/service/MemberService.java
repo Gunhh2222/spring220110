@@ -28,7 +28,7 @@ public class MemberService {
 
 
 	public MemberVO getMemberById(String id) {
-		return memberMapper.getMemberByid(id);
+		return memberMapper.getMemberById(id);
 	}
 		
 	

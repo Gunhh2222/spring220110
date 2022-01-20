@@ -37,7 +37,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("/join")
-	public ResponseEntity<String> join(MemberVO memberVO){
+	public ResponseEntity<String> join(MemberVO memberVO,
+				String passwdConfirm) {
 		
 		System.out.println("memberVO" + memberVO);
 		
@@ -45,18 +46,36 @@ public class MemberController {
 		String id = memberVO.getId();//memberVO안에 있는 id정보를 가지고옴
 		
 		MemberVO dbMemberVO = memberService.getMemberById(id);
-		
 		System.out.println("dbMemberVO :" + dbMemberVO);
 		
 		if (dbMemberVO != null) { //이미 존재하는 아이디
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Type", "text/html; charset=UTF-8");
 
-			String str = JScript.back("아이디가 존재하지 않습니다.");
+			String str = JScript.back("이미 존재하는 아이디입니다.");
 
 			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
 		}
+		
 		// 2. 비밀번호, 비밀번호 확인 서로 같은지 체크
+		
+		String passwd = memberVO.getPasswd();
+		
+		// 비밀번호가 서로 다를때
+		
+		if (passwd.equals(passwdConfirm) == false) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			String str = JScript.back("비밀번호가 서로 다릅니다.");
+			
+			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+		}
+		
+		// 아이디 체크. 비밀번호 모두 통과했을때
+		
+		System.out.println("memberVO" + memberVO);
+		
 		
 		// 3. DB에 등록
 		

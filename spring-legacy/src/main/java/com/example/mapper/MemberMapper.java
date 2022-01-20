@@ -6,7 +6,7 @@ public interface MemberMapper {
 
 	// =============== select =================
 	
-	MemberVO getMemberByid(String id);
+	MemberVO getMemberById(String id);
 	
 	// =============== insert =================
 	
