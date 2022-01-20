@@ -1,5 +1,8 @@
 package com.example.controller;
 
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.MemberVO;
 import com.example.service.MemberService;
+import com.example.utill.JScript;
 
 @Controller
 @RequestMapping("/member/*")
@@ -38,9 +42,20 @@ public class MemberController {
 		System.out.println("memberVO" + memberVO);
 		
 		// 1. 아이디 중복체크(DB에 있는지 확인)
-		String id = memberVO.getId();
+		String id = memberVO.getId();//memberVO안에 있는 id정보를 가지고옴
 		
+		MemberVO dbMemberVO = memberService.getMemberById(id);
 		
+		System.out.println("dbMemberVO :" + dbMemberVO);
+		
+		if (dbMemberVO != null) { //이미 존재하는 아이디
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			String str = JScript.back("아이디가 존재하지 않습니다.");
+
+			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+		}
 		// 2. 비밀번호, 비밀번호 확인 서로 같은지 체크
 		
 		// 3. DB에 등록
