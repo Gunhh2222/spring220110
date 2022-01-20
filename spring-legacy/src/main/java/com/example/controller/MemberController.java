@@ -1,6 +1,9 @@
 package com.example.controller;
 
 
+import java.util.Date;
+
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,10 +76,18 @@ public class MemberController {
 		}
 		
 		// 아이디 체크. 비밀번호 모두 통과했을때
+		System.out.println("수정 전 memberVO" + memberVO);
 		
-		System.out.println("memberVO" + memberVO);
+		// 회원가입 날짜 설정하기
+		memberVO.setRegDate(new Date());
+		
+		// 비밀번호 암호화
+		
+		String hashPasswd = BCrypt.hashpw(passwd, BCrypt.gensalt());
+		memberVO.setPasswd(hashPasswd);
 		
 		
+		System.out.println("수정 후 memberVO" + memberVO);
 		// 3. DB에 등록
 		
 		// 4. 회원가입완료 메세지를 띄우고, 로그인화면으로 이동
