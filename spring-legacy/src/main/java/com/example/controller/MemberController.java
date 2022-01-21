@@ -88,11 +88,17 @@ public class MemberController {
 		
 		
 		System.out.println("수정 후 memberVO" + memberVO);
+		
 		// 3. DB에 등록
+		memberService.insertMember(memberVO);
 		
 		// 4. 회원가입완료 메세지를 띄우고, 로그인화면으로 이동
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "text/html; charset=UTF-8");
+
+		String str = JScript.href("회원가입 완료", "/member/login");
 		
-		
-		return null;
+		return new ResponseEntity<String>(str, headers, HttpStatus.OK);
 	}
+	
 }

@@ -31,7 +31,8 @@ public class MemberService {
 		return memberMapper.getMemberById(id);
 	}
 		
-	
-	
+	public void insertMember(MemberVO memberVO) {
+		memberMapper.insertMember(memberVO);
+	}
 	
 }
