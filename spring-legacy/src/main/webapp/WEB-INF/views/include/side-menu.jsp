@@ -15,7 +15,7 @@
 					<th scope="row"><a href="/member/myInfo">내정보 보기</a></th>
 				</tr>
 				<tr>
-					<th scope="row"><a href="/member/modyfy">내정보 수정</a></th>
+					<th scope="row"><a href="/member/modify">내정보 수정</a></th>
 				</tr>
 				<tr>
 					<th scope="row"><a href="/member/passwd">비밀번호 변경</a></th>

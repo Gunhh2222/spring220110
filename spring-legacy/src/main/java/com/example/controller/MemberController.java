@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public class MemberController {
 
 		// 1. id 존재여부
 		MemberVO dbMemberVO = memberService.getMemberById(id);
-		
+
 		if (dbMemberVO == null) {// 존재하지 않는 아이디(MemberVO의 DB안에 id창에 입력한 id가 없을시)
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Content-Type", "text/html; charset=UTF-8");
@@ -58,7 +59,7 @@ public class MemberController {
 
 		// 2. 비밀번호 체크
 		String realHashPasswd = dbMemberVO.getPasswd();
-		
+
 		Boolean isPasswdRight = BCrypt.checkpw(passwd, realHashPasswd);
 		if (isPasswdRight == false) { // 비밀번호가 틀림
 			HttpHeaders headers = new HttpHeaders();
@@ -69,7 +70,7 @@ public class MemberController {
 			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
 		}
 		System.out.println("realHashPasswd : " + realHashPasswd);
-		
+
 		// 3. 세션 등록
 		session.setAttribute("id", id);
 
@@ -81,7 +82,7 @@ public class MemberController {
 			cookie.setPath("/"); // 모든경로에 적용
 			response.addCookie(cookie);
 		}
-		
+
 		// 5. 로그인 성공 메세지 띄우기, 메인화면으로 이동
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "text/html; charset=UTF-8");
@@ -156,13 +157,12 @@ public class MemberController {
 
 		return new ResponseEntity<String>(str, headers, HttpStatus.OK);
 	} // join
-	
+
 	@GetMapping("logout")
-	public String logout(HttpSession session,
-			HttpServletRequest request, HttpServletResponse response) {
+	public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		// 세션비우기
 		session.invalidate();
-		
+
 		// 쿠키 수명 0으로 만들어서 보내기
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
@@ -174,14 +174,44 @@ public class MemberController {
 				}
 			}
 		}
-		
+
 		return "index";
 	}
-	
+
 	@GetMapping("/myInfo")
-	public String myInfo() {
-		
+	public String myInfo(HttpSession session, Model model) {
+
+		String id = (String) session.getAttribute("id");
+
+		MemberVO memberVO = memberService.getMemberById(id);
+
+		model.addAttribute("member", memberVO);
+
 		return "member/myInfo";
 	}
+
+	@GetMapping("/modify")
+	public String modifyForm(HttpSession session, Model model) {
+
+		String id = (String) session.getAttribute("id");
+
+		MemberVO memberVO = memberService.getMemberById(id);
+
+		model.addAttribute("member", memberVO);
+
+		return "member/memberModify";
+	}
+
+	@PostMapping("/modify")
+	public ResponseEntity<String> modify(MemberVO memberVO) {
+
+		System.out.println("memberVO : " + memberVO);
+
+		return null;
+
 	
+	
+	
+	
+	}
 }
