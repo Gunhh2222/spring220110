@@ -4,11 +4,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<jsp:include page="/WEB-INF/views/include/head.jsp" /> <!-- head 파일경로 -->
+<jsp:include page="/WEB-INF/views/include/head.jsp" />
+<!-- head 파일경로 -->
 </head>
 <body id="page-top">
 	<!-- Navigation-->
-	<jsp:include page="/WEB-INF/views/include/nav-bar.jsp" /> <!-- nav-bar 파일경로 -->
+	<jsp:include page="/WEB-INF/views/include/nav-bar.jsp" />
+	<!-- nav-bar 파일경로 -->
 	<!-- Masthead-->
 	<header class="masthead bg-primary text-white text-center">
 		<div class="container d-flex align-items-center flex-column">
@@ -114,7 +116,8 @@
 		</div>
 	</section>
 	<!-- Footer-->
-	<jsp:include page="/WEB-INF/views/include/footer.jsp" /> <!-- footer 파일경로 -->
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	<!-- footer 파일경로 -->
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
