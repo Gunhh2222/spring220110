@@ -3,6 +3,7 @@ package com.example.controller;
 import java.util.Date;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -154,6 +155,30 @@ public class MemberController {
 		String str = JScript.href("회원가입 완료", "/member/login");
 
 		return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+	} // join
+	
+	@GetMapping("logout")
+	public String logout(HttpSession session,
+			HttpServletRequest request, HttpServletResponse response) {
+		// 세션비우기
+		session.invalidate();
+		
+		// 쿠키 수명 0으로 만들어서 보내기
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("userId")) {
+					cookie.setMaxAge(0);
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
+			}
+		}
+		
+		
+		
+		
+		return "index";
 	}
 
 }

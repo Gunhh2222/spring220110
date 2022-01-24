@@ -19,11 +19,11 @@
 				<li class="nav-item mx-0 mx-lg-1"><a
 					class="nav-link py-3 px-0 px-lg-3 rounded" href="/board/list">게시판</a></li>
 				<c:choose>
-					<c:when test="${ not empty sessionScope.id }">
+					<c:when test="${ not empty sessionScope.id }"> <!-- 조건문이 실행되지 않을시 다시 잘라내고 붙여넣기  -->
 						<li class="nav-item mx-0 mx-lg-1"><a
 							class="nav-link py-3 px-0 px-lg-3 rounded" href="/member/myInfo">내정보</a></li>
 						<li class="nav-item mx-0 mx-lg-1"><a
-							class="nav-link py-3 px-0 px-lg-3 rounded" href="/member/logout">로그아웃</a></li>	
+							class="nav-link py-3 px-0 px-lg-3 rounded" href="/member/logout">로그아웃</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="nav-item mx-0 mx-lg-1"><a
