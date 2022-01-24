@@ -175,10 +175,13 @@ public class MemberController {
 			}
 		}
 		
-		
-		
-		
 		return "index";
 	}
-
+	
+	@GetMapping("/myInfo")
+	public String myInfo() {
+		
+		return "member/myInfo";
+	}
+	
 }
