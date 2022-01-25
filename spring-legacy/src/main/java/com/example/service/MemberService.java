@@ -35,4 +35,14 @@ public class MemberService {
 		memberMapper.insertMember(memberVO);
 	}
 	
+	public void modifyMember(MemberVO memberVO) {
+		memberMapper.modifyMember(memberVO);
+	}
+
+	public void modifyPasswd(String id,String newPasswd) {
+		memberMapper.modifyPasswd(id, newPasswd);
+	}
+
+
+		
 }

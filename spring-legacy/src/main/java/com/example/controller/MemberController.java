@@ -203,15 +203,91 @@ public class MemberController {
 	}
 
 	@PostMapping("/modify")
-	public ResponseEntity<String> modify(MemberVO memberVO) {
+	public ResponseEntity<String> modify(MemberVO memberVO, HttpSession session) {
+
+		String id = (String) session.getAttribute("id");
 
 		System.out.println("memberVO : " + memberVO);
+		memberVO.setId(id);
+		System.out.println("수정 후 memberVO : " + memberVO);
 
-		return null;
+		// 1.비밀번호 맞는지 체크
+		MemberVO dbMemberVO = memberService.getMemberById(id);
 
-	
-	
-	
-	
+		boolean isPasswdRight = BCrypt.checkpw(memberVO.getPasswd(), dbMemberVO.getPasswd());
+
+		if (isPasswdRight == false) { // 비밀번호 틀림
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			String str = JScript.back("비밀번호가 틀렸습니다.");
+
+			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+		}
+
+		// 2.DB 정보 수정하기
+
+		memberService.modifyMember(memberVO);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "text/html; charset=UTF-8");
+
+		String str = JScript.href("회원정보 수정 완료", "/member/myInfo");
+
+		return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+	}
+	@GetMapping("/passwd")
+	public String passwdForm() {
+		
+		return "member/passwd";
+	}
+	@PostMapping("/passwd")
+	public ResponseEntity<String> passwd(String passwd,
+			String newPasswd, String newPasswdConfirm,
+			HttpSession session) {
+		
+		//1. 현재 비밀번호 맞는지 체크
+		String id = (String) session.getAttribute("id");	
+		MemberVO dbmemberVO = memberService.getMemberById(id);
+		
+		boolean isPasswdRight = BCrypt.checkpw(passwd, dbmemberVO.getPasswd());
+		
+		if (isPasswdRight == false) { // 현재 비밀번호 일치하지 않음
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			String str = JScript.back("현재 비밀번호가 틀렸습니다.");
+
+			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+		}
+		
+		//2. 새 비밀번호, 새 비밀번호 확인 맞는지 체크
+		if (newPasswd.equals(newPasswdConfirm) == false) { // 새밀번호, 새비밀번호 확인이 서로 다름
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Content-Type", "text/html; charset=UTF-8");
+
+			String str = JScript.back("새 비밀번호가 일치하지 않습니다.");
+
+			return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+			
+		}
+		
+		
+		//3. DB 비밀번호 변경
+		// 3-1. 비밀번호 암호화
+		String hashPasswd = BCrypt.hashpw(newPasswd, BCrypt.gensalt());
+		
+		
+		memberService.modifyPasswd(id, hashPasswd);
+		
+		
+		//4. 비밀번호 변경 완료 메세지 띄우고 로그아웃 처리
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "text/html; charset=UTF-8");
+
+		String str = JScript.href("비밀번호 변경 완료", "/member/logout");
+
+		return new ResponseEntity<String>(str, headers, HttpStatus.OK);
+		
 	}
 }

@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.MemberMapper">
 
-<!-- xml은 DB와   -->
 	<!-- ===========select============== -->
 	<select id="getMemberById" resultType="MemberVO">
       <![CDATA[
@@ -24,8 +23,22 @@
 		]]>
 	</insert>
 	<!-- ===========update============== -->
-
-
+	<update id="modifyMember">
+		<![CDATA[
+			UPDATE member
+			SET name=#{name}, birthday=#{birthday}, gender=#{gender},
+				email=#{email}, recv_email=#{recvEmail}
+			WHERE id = #{id}
+		]]>
+	</update>
+	
+	<update id="modifyPasswd">
+		<![CDATA[
+			UPDATE member
+			SET passwd=#{newPasswd}
+			WHERE id = #{id}
+		]]>
+	</update>
 	<!-- ===========delete============== -->
 
 </mapper>
