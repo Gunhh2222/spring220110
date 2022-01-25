@@ -22,5 +22,5 @@ public interface MemberMapper { // interface는 추상화를 시켜 설계도를
 			@Param("id") String id, 
 			@Param("newPasswd") String newPasswd);
 	// =============== delete =================
-
+	void deleteMemberById(String id);
 }

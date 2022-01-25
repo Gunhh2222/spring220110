@@ -40,5 +40,10 @@
 		]]>
 	</update>
 	<!-- ===========delete============== -->
-
+	<delete id="deleteMemberById">
+		<![CDATA[
+			DELETE FROM member
+			WHERE id = #{id}
+		]]>
+	</delete>
 </mapper>

@@ -42,7 +42,8 @@ public class MemberService {
 	public void modifyPasswd(String id,String newPasswd) {
 		memberMapper.modifyPasswd(id, newPasswd);
 	}
-
-
-		
+	
+	public void deleteMemberById(String id) {
+		memberMapper.deleteMemberById(id);
+	}
 }
